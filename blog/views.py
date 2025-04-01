@@ -1,13 +1,11 @@
-from django.shortcuts import render
 
 # Create your views here.
 # blog/views.py
 # blog/views.py
-
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from blog.models import Post, Comment
 from blog.forms import CommentForm
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 # ...
 
@@ -59,3 +57,22 @@ def blog_category(request, category):
 
 # ...
 
+
+def stub_view(request, *args, **kwargs):
+    body = "Stub View\n\n"
+    if args:
+        body += "Args:\n"
+        body += "\n".join(["\t%s" % a for a in args])
+    if kwargs:
+        body += "Kwargs:\n"
+        body += "\n".join(["\t%s: %s" % i for i in kwargs.items()])
+    return HttpResponse(body, content_type="text/plain")
+
+def detail_view(request, post_id):
+    published = Post.objects.exclude(published_date__exact=None)
+    try:
+        post = published.get(pk=post_id)
+    except Post.DoesNotExist:
+        raise Http404
+    context = {'post': post}
+    return render(request, 'blog/detail.html', context)

@@ -1,9 +1,13 @@
 from django.contrib import admin
+from blog.models import Post, Category,Comment  # <-- import Category
+
+
+admin.site.register(Post)
+admin.site.register(Category)
+admin.site.register(Comment)
 
 # Register your models here.
 # blog/admin.py
-
-from blog.models import Category, Comment, Post
 
 class CategoryAdmin(admin.ModelAdmin):
     pass
@@ -14,6 +18,3 @@ class PostAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Post, PostAdmin)
-admin.site.register(Comment, CommentAdmin)
