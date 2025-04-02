@@ -6,6 +6,7 @@ from django.shortcuts import render
 from blog.models import Post, Comment
 from blog.forms import CommentForm
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.template import loader
 
 # ...
 
@@ -76,3 +77,14 @@ def detail_view(request, post_id):
         raise Http404
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
+
+
+
+# and this view
+def list_view(request):
+    published = Post.objects.exclude(published_date__exact=None)
+    posts = published.order_by('-published_date')
+    template = loader.get_template('blog/list.html') # -->
+    context = {'posts': posts}
+    body = template.render(context)
+    return HttpResponse(body, content_type="text/html")
