@@ -1,7 +1,6 @@
 
 # Create your views here.
 # blog/views.py
-# blog/views.py
 from django.shortcuts import render
 from blog.models import Post, Comment
 from blog.forms import CommentForm
@@ -88,3 +87,4 @@ def list_view(request):
     context = {'posts': posts}
     body = template.render(context)
     return HttpResponse(body, content_type="text/html")
+
