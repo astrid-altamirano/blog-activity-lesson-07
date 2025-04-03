@@ -1,0 +1,49 @@
+
+{% load static %}
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My Personal Blog</title>
+    <!--link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"-->
+    <link type="text/css" rel="stylesheet" href="{% static 'django_blog.css' %}">
+</head>
+<body>
+<h1>My Personal Blog</h1>
+<a href="{% url "blog_index" %}">Home</a>
+<hr>
+{% block page_title %}{% endblock page_title %}
+{% block page_content %}{% endblock page_content %}
+
+    <div id="header">  {# header begins here #}
+     <ul id="control-bar">
+     {% if user.is_authenticated %}
+      {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
+       <!--Put To fix the error-->
+       <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">logout</button>
+    </form>
+        <!--To fix the error'-->
+      {% else %}
+      <!--To correct error-->
+      <li><a href="{% url 'login' %}"> Login</a></li>
+     {% endif %}
+     </ul>
+     <!-- start new HTML... -->
+      {% if user.is_authenticated %}
+      <p>Hi {{ user.username }}!</p>
+      {% else %}
+      <p>You are not logged in.</p>
+      <!--To correct error Log IN-->
+      <!--<a href="{% url 'login' %}">Log In</a> -->
+      {% endif %}
+      <!-- end new HTML... -->
+      {% block content %}
+      {% endblock content %}
+      </div>
+    </div>              {# header ends here #}
+  <div id="container">  ...
+    </body>
+</html>

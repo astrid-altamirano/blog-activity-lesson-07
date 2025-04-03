@@ -1,0 +1,97 @@
+
+# Create your views here.
+# blog/views.py
+from django.shortcuts import render
+from blog.models import Post, Comment
+from blog.forms import CommentForm
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.template import loader
+from django.contrib.auth import logout as auth_logout
+
+
+# ...
+
+def blog_detail(request, pk):
+    post = Post.objects.get(pk=pk)
+    form = CommentForm()
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(
+                author=form.cleaned_data["author"],
+                body=form.cleaned_data["body"],
+                post=post,
+            )
+            comment.save()
+            return HttpResponseRedirect(request.path_info)
+
+    comments = Comment.objects.filter(post=post)
+    context = {
+        "post": post,
+        "comments": comments,
+        "form": CommentForm(),
+    }
+    return render(request, "blog/detail.html", context)
+#_______________________________________
+
+def blog_index(request):
+    posts = Post.objects.all().order_by("-created_on")
+    context = {
+        "posts": posts,
+    }
+    return render(request, "blog/index.html", context)
+
+# blog/views.py
+
+# ...
+
+def blog_category(request, category):
+    posts = Post.objects.filter(
+        categories__name__contains=category
+    ).order_by("-created_on")
+    context = {
+        "category": category,
+        "posts": posts,
+    }
+    return render(request, "blog/category.html", context)
+
+# blog/views.py
+
+# ...
+
+
+def stub_view(request, *args, **kwargs):
+    body = "Stub View\n\n"
+    if args:
+        body += "Args:\n"
+        body += "\n".join(["\t%s" % a for a in args])
+    if kwargs:
+        body += "Kwargs:\n"
+        body += "\n".join(["\t%s: %s" % i for i in kwargs.items()])
+    return HttpResponse(body, content_type="text/plain")
+
+def detail_view(request, post_id):
+    published = Post.objects.exclude(published_date__exact=None)
+    try:
+        post = published.get(pk=post_id)
+    except Post.DoesNotExist:
+        raise Http404
+    context = {'post': post}
+    return render(request, 'blog/detail.html', context)
+
+
+
+# and this view
+def list_view(request):
+    published = Post.objects.exclude(published_date__exact=None)
+    posts = published.order_by('-published_date')
+    template = loader.get_template('blog/list.html') # -->
+    context = {'posts': posts}
+    body = template.render(context)
+    return HttpResponse(body, content_type="text/html")
+
+
+# Put today 
+def logout(request):
+    auth_logout(request)
+    return render(request,"logout.html")
