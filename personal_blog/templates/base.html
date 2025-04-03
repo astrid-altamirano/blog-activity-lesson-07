@@ -20,9 +20,15 @@
      <ul id="control-bar">
      {% if user.is_authenticated %}
       {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
-       <li><a href="{% url 'logout' %}">logout</a></li>
+       <!--Put To fix the error-->
+       <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">logout</button>
+    </form>
+        <!--To fix the error'-->
       {% else %}
-       <li><a href="{% url 'login' %}">login</a></li>
+      <!--To correct error-->
+      <li><a href="{% url 'login' %}"> Login</a></li>
      {% endif %}
      </ul>
      <!-- start new HTML... -->
@@ -30,7 +36,8 @@
       <p>Hi {{ user.username }}!</p>
       {% else %}
       <p>You are not logged in.</p>
-      <a href="{% url 'login' %}">Log In</a>
+      <!--To correct error Log IN-->
+      <!--<a href="{% url 'login' %}">Log In</a> -->
       {% endif %}
       <!-- end new HTML... -->
       {% block content %}

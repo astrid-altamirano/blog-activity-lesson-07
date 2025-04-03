@@ -1,5 +1,5 @@
 body {
-    background-color: #eee;
+    background-color: #eeeeee;
     color: #111;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     margin:0;
@@ -29,7 +29,7 @@ body {
     display: inline-block;
 }
 #control-bar li a {
-    color: #eee;
+    color: #eeeeee;
     padding: 0.5em;
     text-decoration: none;
 }
@@ -63,7 +63,7 @@ div.entry-body {
     padding: 1em;
 }
 .info {
-    background-color: #aae;
+    background-color: rgb(170, 231, 238);
 }
 ul.categories {
     list-style: none;

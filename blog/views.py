@@ -6,6 +6,8 @@ from blog.models import Post, Comment
 from blog.forms import CommentForm
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
+from django.contrib.auth import logout as auth_logout
+
 
 # ...
 
@@ -88,3 +90,8 @@ def list_view(request):
     body = template.render(context)
     return HttpResponse(body, content_type="text/html")
 
+
+# Put today 
+def logout(request):
+    auth_logout(request)
+    return render(request,"logout.html")
