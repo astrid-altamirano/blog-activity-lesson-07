@@ -25,7 +25,18 @@
        <li><a href="{% url 'login' %}">login</a></li>
      {% endif %}
      </ul>
+     <!-- start new HTML... -->
+      {% if user.is_authenticated %}
+      <p>Hi {{ user.username }}!</p>
+      {% else %}
+      <p>You are not logged in.</p>
+      <a href="{% url 'login' %}">Log In</a>
+      {% endif %}
+      <!-- end new HTML... -->
+      {% block content %}
+      {% endblock content %}
+      </div>
     </div>              {# header ends here #}
   <div id="container">  ...
-</body>
+    </body>
 </html>
